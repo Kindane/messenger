@@ -40,11 +40,14 @@ void Server::listen_user(int socket)
     while (true)
     {
         char data[BUF_SIZE];
+        std::cout << "\naccept data...\n";
         recv(socket, data, BUF_SIZE, 0);
         std::cout << data;
 
+        // bad idea... very bad...
         //if (recv(socket, data, BUF_SIZE, 0) != -1);
             //std::cout << data;
+        //std::cout << "\nNo data, sorry, bye.\n";
         //break;
     }
 }

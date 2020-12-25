@@ -10,7 +10,7 @@ Client::Client(const char* name)
 
 Client::~Client() { /* TODO send to server that user is offline */ }
 
-
+// returns true on success, else false
 bool Client::send_data(const char* data)
 {
     if (send(sock, data, BUF_SIZE, 0) != -1)
@@ -36,6 +36,7 @@ bool Client::cconnect(in_addr_t __addr, in_port_t __port)
         perror("SOCKET CONNECT ERROR");
         exit(CONNECTION_ERROR);
     }
+    std::cout << "Connected successfull...\n";
     return true;
 }
 
