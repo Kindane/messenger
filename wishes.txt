@@ -1,0 +1,21 @@
+server:
+
+ctor:
+	get ip&&port
+	create server socket
+	server must be one-thread.
+	other threads must be started by me in main.cpp
+
+dtor:
+	send all users that server is fall
+
+client:
+
+ctor:
+
+	get name, create user socket.
+	get ip&&port of server
+
+dtor:
+	send to server that user is offline
+
