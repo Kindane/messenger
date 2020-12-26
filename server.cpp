@@ -18,6 +18,7 @@ Server::Server(in_addr_t __addr, in_port_t __port)
 //dtor
 Server::~Server() { send_all("\n\nBAD CONNECTION WITH SERVER...\n\n"); }
 
+// bind && getting ready for accept users...
 bool Server::setup()
 {
     if (bind(listener, (struct sockaddr*)&addr, sizeof(addr)) < 0)

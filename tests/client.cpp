@@ -19,8 +19,7 @@ void send_messages(Client client, int count)
 int main()
 {
     Client client("Michael");
-    client.cconnect(INADDR_LOOPBACK, 5014);
-
-    client.send_data("Test message");
+    client.cconnect(INADDR_LOOPBACK, 5004);
+    send_messages(client, 3);
     return 0;
 }

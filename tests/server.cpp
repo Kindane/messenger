@@ -15,7 +15,7 @@ NEED TO BE FIXED!!!
 
 int main()
 {
-    Server server(INADDR_ANY, 5014);
+    Server server(INADDR_ANY, 5004);
     server.setup();
     server.start();
     

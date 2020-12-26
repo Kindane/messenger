@@ -11,7 +11,7 @@ Client::Client(const char* name) {
 // Destructor
 Client::~Client() {
     std::cout << "client dtor...\n";
-    this->sock = -1;
+    this->send_data("offline");
     /* TODO send to server that user is offline */
 }
 
@@ -24,12 +24,10 @@ bool Client::send_data(const char* data) {
 }
 
 // Connect client to ADDR with port PORT
-bool Client::cconnect(in_addr_t __addr, in_port_t __port)
-{
+bool Client::cconnect(in_addr_t __addr, in_port_t __port) {
     
     sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (sock < 0)
-    {
+    if (sock < 0) {
         perror("socket error.");
         exit(CREATE_ERROR);
     }
@@ -37,8 +35,7 @@ bool Client::cconnect(in_addr_t __addr, in_port_t __port)
     addr.sin_family = AF_INET;
     addr.sin_port = htons(__port);
     addr.sin_addr.s_addr = htonl(__addr);
-    if (connect(sock, (struct sockaddr*)&addr, sizeof(addr)) < 0)
-    {
+    if (connect(sock, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
         perror("SOCKET CONNECT ERROR");
         exit(CONNECTION_ERROR);
     }
@@ -47,10 +44,8 @@ bool Client::cconnect(in_addr_t __addr, in_port_t __port)
 }
 
 // listen cconected server (inf loop)
-void Client::listen_server()
-{
-    while (true)
-    {
+void Client::listen_server() {
+    while (true) {
         char data[BUF_SIZE];
         recv(sock, data, BUF_SIZE, 0);
         std::cout << data;
