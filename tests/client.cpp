@@ -1,18 +1,26 @@
 #include "../include/client.hpp"
 #include <string>
 
+
+// Send many data
+void send_messages(Client client, int count)
+{
+    for (size_t i = 0; i < count; i++)
+    {
+        char data[BUF_SIZE];
+        std::cin.getline(data, BUF_SIZE);
+        std::cout << "data = " << data << std::endl;
+        client.send_data(data);
+    }
+}
+
+
+
 int main()
 {
     Client client("Michael");
-    client.cconnect(INADDR_LOOPBACK, 3004);
-    /*
-    for (size_t i = 0; i < 10; i++)
-    {
-        std::string data;
-        std::cin >> data;
-        client.send_data(data.c_str());
-    }
-    */
-    client.send_data("hello, server!!!!");
+    client.cconnect(INADDR_LOOPBACK, 5014);
+
+    client.send_data("Test message");
     return 0;
 }

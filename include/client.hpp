@@ -5,8 +5,8 @@
 class Client
 {
 private:
-    int sock;
-    struct sockaddr_in addr;
+    int sock; // server socket
+    struct sockaddr_in addr; // server address
     char nickname[15];
 public:
     explicit Client(const char* name);

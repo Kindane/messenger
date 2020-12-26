@@ -20,7 +20,6 @@ Server::~Server() { send_all("\n\nBAD CONNECTION WITH SERVER...\n\n"); }
 
 bool Server::setup()
 {
-    std::cout << "setup\n";
     if (bind(listener, (struct sockaddr*)&addr, sizeof(addr)) < 0)
     {
         perror("CANNOT BIND SOCKET");
@@ -39,16 +38,22 @@ void Server::listen_user(int socket)
     // users.push_back(socket);
     while (true)
     {
+        if (socket < 0)
+        {
+            std::cout << "Bad connection\n";
+            break;
+        }
         char data[BUF_SIZE];
         std::cout << "\naccept data...\n";
-        recv(socket, data, BUF_SIZE, 0);
-        std::cout << data;
-
-        // bad idea... very bad...
-        //if (recv(socket, data, BUF_SIZE, 0) != -1);
-            //std::cout << data;
-        //std::cout << "\nNo data, sorry, bye.\n";
-        //break;
+        
+        // error! inf repeating
+        if (recv(socket, data, BUF_SIZE, 0) > 0);
+        {
+            std::cout << data;
+            continue;
+        }
+        std::cout << "\nNo data, sorry, bye.\n";
+        break;
     }
 }
 
@@ -77,7 +82,8 @@ void Server::start()
     while (true)
     {
         std::cout << "\nserver waiting for client...\n";
-        sock = accept(listener, 0, 0);
+        sock = accept(listener, 0, 0); // correct
+        //sock = accept(listener, (struct sockaddr*)&addr, 0); // dn
         if (sock < 0)
         {
             perror("BAD CONNECTION WITH CLIENT");

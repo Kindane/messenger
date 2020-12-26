@@ -1,23 +1,29 @@
 #include "include/client.hpp"
 #include <cstring>
 
-Client::Client(const char* name)
-{
+// Constructor
+Client::Client(const char* name) {
     size_t len = strlen(name);
     if (len <= 30) { strcpy(nickname, name); }
     else { throw "NAME MUST BE <= 30 SYMBOLS"; }
 }
 
-Client::~Client() { /* TODO send to server that user is offline */ }
+// Destructor
+Client::~Client() {
+    std::cout << "client dtor...\n";
+    this->sock = -1;
+    /* TODO send to server that user is offline */
+}
+
 
 // returns true on success, else false
-bool Client::send_data(const char* data)
-{
-    if (send(sock, data, BUF_SIZE, 0) != -1)
+bool Client::send_data(const char* data) {
+    if (send(sock, data, strlen(data)+1, 0) != -1)
         return true;
     return false;
 }
 
+// Connect client to ADDR with port PORT
 bool Client::cconnect(in_addr_t __addr, in_port_t __port)
 {
     
@@ -40,6 +46,7 @@ bool Client::cconnect(in_addr_t __addr, in_port_t __port)
     return true;
 }
 
+// listen cconected server (inf loop)
 void Client::listen_server()
 {
     while (true)
