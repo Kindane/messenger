@@ -21,7 +21,7 @@ Server::~Server() { send_all("\n\nBAD CONNECTION WITH SERVER...\n\n"); }
 // bind && getting ready for accept users...
 bool Server::setup()
 {
-    if (bind(listener, (struct sockaddr*)&addr, sizeof(addr)) < 0)
+    if (bind(listener, (struct sockaddr *)&addr, sizeof(addr)) < 0)
     {
         perror("CANNOT BIND SOCKET");
         exit(BIND_ERROR);
@@ -46,9 +46,10 @@ void Server::listen_user(int socket)
         }
         char data[BUF_SIZE];
         std::cout << "\naccept data...\n";
-        
+
         // error! inf repeating
-        if (recv(socket, data, BUF_SIZE, 0) > 0);
+        if (recv(socket, data, BUF_SIZE, 0) > 0)
+            ;
         {
             std::cout << data;
             continue;
@@ -59,18 +60,17 @@ void Server::listen_user(int socket)
 }
 
 // send data to socket
-bool Server::send_data(int socket, const char* data)
+bool Server::send_data(int socket, const char *data)
 {
     if (send(socket, data, BUF_SIZE, 0) != -1)
         return true;
     return false;
-
 }
 
 // send data to all user
-void Server::send_all(const char* data)
+void Server::send_all(const char *data)
 {
-    for(auto user : users)
+    for (auto user : users)
     {
         send_data(user, data);
     }
@@ -92,5 +92,4 @@ void Server::start()
         }
         listen_user(sock); // ERROR!!!!
     }
-    
 }

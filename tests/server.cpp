@@ -18,6 +18,6 @@ int main()
     Server server(INADDR_ANY, 5004);
     server.setup();
     server.start();
-    
+
     return 0;
 }

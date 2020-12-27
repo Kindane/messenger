@@ -9,7 +9,6 @@
 #include <iostream>
 #include <thread>
 
-
 #define BUF_SIZE 2048
 #define BIND_ERROR -2
 #define CREATE_ERROR -1

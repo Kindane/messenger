@@ -1,7 +1,6 @@
 #include "../include/client.hpp"
 #include <string>
 
-
 // Send many data
 void send_messages(Client client, int count)
 {
@@ -13,8 +12,6 @@ void send_messages(Client client, int count)
         client.send_data(data);
     }
 }
-
-
 
 int main()
 {
