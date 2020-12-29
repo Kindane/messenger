@@ -48,8 +48,7 @@ void Server::listen_user(int socket)
         std::cout << "\naccept data...\n";
 
         // error! inf repeating
-        if (recv(socket, data, BUF_SIZE, 0) > 0)
-            ;
+        if (recv(socket, data, BUF_SIZE, 0) > 0);
         {
             std::cout << data;
             continue;
