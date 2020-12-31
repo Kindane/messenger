@@ -1,7 +1,6 @@
 #include "include/client.hpp"
 #include <cstring>
 
-// Constructor
 Client::Client(const char *name)
 {
     size_t len = strlen(name);
@@ -15,23 +14,29 @@ Client::Client(const char *name)
     }
 }
 
-// Destructor
 Client::~Client()
 {
-    std::cout << "client dtor...\n";
-    this->send_data("offline");
     /* TODO send to server that user is offline */
+    std::cout << "client dtor...\n";
+    close(sock);
 }
 
-// returns true on success, else false
-bool Client::send_data(const char *data)
+int Client::send_data(char *buf, int len, int flags=0)
 {
-    if (send(sock, data, strlen(data) + 1, 0) != -1)
-        return true;
-    return false;
+    int total = 0;
+    int n;
+
+    while (total < len)
+    {
+        n = send(sock, buf + total, len - total, flags);
+        if (n == -1)
+            break;
+        total += n;
+    }
+
+    return (n == -1 ? -1 : total);
 }
 
-// Connect client to ADDR with port PORT
 bool Client::cconnect(in_addr_t __addr, in_port_t __port)
 {
 
@@ -54,7 +59,6 @@ bool Client::cconnect(in_addr_t __addr, in_port_t __port)
     return true;
 }
 
-// listen cconected server (inf loop)
 void Client::listen_server()
 {
     while (true)
