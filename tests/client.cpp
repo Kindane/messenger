@@ -9,14 +9,14 @@ void send_messages(Client client, int count)
         char data[BUF_SIZE];
         std::cin.getline(data, BUF_SIZE);
         std::cout << "data = " << data << std::endl;
-        client.send_data(data);
+        client.send_data(data, sizeof(data));
     }
 }
 
 int main()
 {
     Client client("Michael");
-    client.cconnect(INADDR_LOOPBACK, 5004);
+    client.cconnect(INADDR_LOOPBACK, 5002);
     send_messages(client, 3);
     return 0;
 }
