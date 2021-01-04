@@ -1,5 +1,4 @@
 client
 server
-tests/client
-tests/server
-wishes.txt
+./tests/client
+./tests/server

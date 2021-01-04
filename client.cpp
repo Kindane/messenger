@@ -21,7 +21,7 @@ Client::~Client()
     close(sock);
 }
 
-int Client::send_data(char *buf, int len, int flags=0)
+int Client::send_data(const char *buf, int len, int flags /*=0*/)
 {
     int total = 0;
     int n;
@@ -56,6 +56,8 @@ bool Client::cconnect(in_addr_t __addr, in_port_t __port)
         exit(CONNECTION_ERROR);
     }
     std::cout << "Connected successfull...\n";
+    std::thread listen_thread([&]() { listen_server(); });
+    listen_thread.detach();
     return true;
 }
 

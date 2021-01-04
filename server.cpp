@@ -7,7 +7,7 @@ Server::Server(in_addr_t __addr, in_port_t __port)
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = htonl(__addr);
 
-    listener = socket(AF_INET, SOCK_STREAM, 0); 
+    listener = socket(AF_INET, SOCK_STREAM, 0);
     if (listener < 0)
     {
         perror("CANNOT CREATE A SERVER SOCKET");
@@ -22,7 +22,7 @@ Server::~Server()
     close(listener);
 }
 
-bool Server::setup()
+bool Server::setup(int connections)
 {
     if (bind(listener, (struct sockaddr *)&addr, sizeof(addr)) < 0)
     {
@@ -31,7 +31,7 @@ bool Server::setup()
     }
     else
     {
-        listen(listener, 3); // ready for accept users
+        listen(listener, connections);
         return true;
     }
 }
@@ -43,28 +43,34 @@ void Server::listen_user(int socket)
         std::cout << "Bad connection\n";
         return;
     }
-    // users.push_back(socket);
+    users.push_back(&socket);
     while (true)
     {
         char data[BUF_SIZE];
-        std::cout << "\naccept data...\n";
+        // std::cout << "\naccept data...\n";
+        std::cout << "...\n";
 
-        // error! inf repeating
         if (recv(socket, data, BUF_SIZE, 0) <= 0)
         {
-            perror("RECV");
-            std::cout << "\nNo data, sorry, bye.\n";
+            std::cout << "\nSomeone of the users disconnected\n";
             break;
         }
         std::cout << data;
+        send_all(data);
         continue;
     }
 }
 
-int Server::send_data(int s, char *buf, int len, int flags)
+/*
+* <s>: socket
+* <buf>: message
+* <len>: length of message,
+* <flags>: flags to send (default=0)
+*/
+int Server::send_data(int s, const char *buf, int len, int flags)
 {
     int total = 0; // sended
-    int n; // count of bytes
+    int n;         // count of bytes
 
     while (total < len)
     {
@@ -78,28 +84,30 @@ int Server::send_data(int s, char *buf, int len, int flags)
     return (n == -1 ? -1 : total);
 }
 
-void Server::send_all(char *data)
+void Server::send_all(const char *data)
 {
     for (auto user : users)
     {
         // <user> is user socket
-        send_data(user, data, sizeof(data), 0);
+        std::cout << "\n[DEBUG] send " << data << " to " << *user << std::endl;
+        send_data(*user, data, sizeof(data), 0);
     }
 }
 
 void Server::start()
 {
-    std::cout << "start\n";
+    std::cout << "Server waiting for users...\n";
     while (true)
     {
-        std::cout << "\nserver waiting for client...\n";
+        // std::cout << "\nserver waiting for client...\n";
         sock = accept(listener, 0, 0); // accept connection
         if (sock < 0)
         {
             perror("BAD CONNECTION WITH CLIENT");
             continue;
         }
-        // there is must be multi-threading or async
-        listen_user(sock); // ERROR!!!!
+        std::cout << "\nNew user connected...\n";
+        std::thread listen_thread([&]() { listen_user(sock); });
+        listen_thread.detach();
     }
 }

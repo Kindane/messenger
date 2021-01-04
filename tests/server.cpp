@@ -1,22 +1,9 @@
 #include "../include/server.hpp"
-// TODO fix bug
-/*bug: 
-server forever repeat a last sended message.
-for example:
-client sent "hello, server!!!!"
-and server repeat
-"accept data...
-hello, server!!!!
-accept data...
-hello, server!!!
-"... forever.
-NEED TO BE FIXED!!!
-*/
 
 int main()
 {
-    Server server(INADDR_ANY, 5002);
-    server.setup();
+    Server server(INADDR_ANY, 3006);
+    server.setup(4);
     server.start();
 
     return 0;
