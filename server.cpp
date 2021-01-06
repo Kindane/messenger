@@ -47,12 +47,22 @@ void Server::listen_user(int socket)
     while (true)
     {
         char data[BUF_SIZE];
-        // std::cout << "\naccept data...\n";
-        std::cout << "...\n";
+        //std::cout << "\naccept data...\n";
 
         if (recv(socket, data, BUF_SIZE, 0) <= 0)
         {
             std::cout << "\nSomeone of the users disconnected\n";
+
+            // ебать костыль придумал 0_0
+            for (int i = 0; i < users.size(); i++)
+            {
+                if (users[i] == &socket)
+                {
+                    users.erase(users.begin()+i); 
+                    break;
+                }
+            }
+            
             break;
         }
         std::cout << data;

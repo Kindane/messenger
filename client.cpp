@@ -17,7 +17,7 @@ Client::Client(const char *name)
 Client::~Client()
 {
     /* TODO send to server that user is offline */
-    std::cout << "client dtor...\n";
+    this->send_data("I'm offline", 12, 0);
     close(sock);
 }
 
