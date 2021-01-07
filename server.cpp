@@ -76,6 +76,7 @@ void Server::listen_user(int socket)
 * <buf>: message
 * <len>: length of message,
 * <flags>: flags to send (default=0)
+* returns: if bad: -1 else: count of sended bytes
 */
 int Server::send_data(int s, const char *buf, int len, int flags)
 {
@@ -100,7 +101,10 @@ void Server::send_all(const char *data)
     {
         // <user> is user socket
         std::cout << "\n[DEBUG] send " << data << " to " << *user << std::endl;
-        send_data(*user, data, sizeof(data), 0);
+        if (send_data(*user, data, sizeof(data), 0) != -1)
+            continue;
+        else
+            std::cout << "can't send " << data << " to " << *user;
     }
 }
 

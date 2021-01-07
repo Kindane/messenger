@@ -21,6 +21,13 @@ Client::~Client()
     close(sock);
 }
 
+/*
+* <s>: socket
+* <buf>: message
+* <len>: length of message,
+* <flags>: flags to send (default=0)
+* returns: if bad: -1 else: count of sended bytes
+*/
 int Client::send_data(const char *buf, int len, int flags /*=0*/)
 {
     int total = 0;
@@ -56,13 +63,14 @@ bool Client::cconnect(in_addr_t __addr, in_port_t __port)
         exit(CONNECTION_ERROR);
     }
     std::cout << "Connected successfull...\n";
-    std::thread listen_thread([&]() { listen_server(); });
+    std::thread listen_thread([&](){listen_server();});
     listen_thread.detach();
     return true;
 }
 
 void Client::listen_server()
 {
+    std::cout << "listening server for data...\n";
     while (true)
     {
         char data[BUF_SIZE];
